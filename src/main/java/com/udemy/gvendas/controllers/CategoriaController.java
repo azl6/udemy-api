@@ -33,4 +33,10 @@ public class CategoriaController {
         service.save(categoria);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Categoria categoria){
+        service.update(id, categoria);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }
