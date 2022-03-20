@@ -32,6 +32,9 @@ public class Produto {
     @JoinColumn(name = "codigo_categoria", referencedColumnName = "codigo")
     private Categoria categoria;
 
+    public Produto() {
+    }
+
     public Long getCodigo() {
         return codigo;
     }
