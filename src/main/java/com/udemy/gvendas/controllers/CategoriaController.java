@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,13 +30,13 @@ public class CategoriaController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@RequestBody Categoria categoria){
+    public ResponseEntity<Void> insert(@Valid @RequestBody Categoria categoria){
         service.save(categoria);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Categoria categoria){
+    public ResponseEntity<Void> update(@Valid @PathVariable Long id, @RequestBody Categoria categoria){
         service.update(id, categoria);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
