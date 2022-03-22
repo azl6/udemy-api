@@ -3,6 +3,7 @@ package com.udemy.gvendas.controllers;
 import com.udemy.gvendas.exceptions.SameNameException;
 import com.udemy.gvendas.exceptions.StandardError;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,6 +28,12 @@ public class ExceptionHandlerController {
     @ExceptionHandler(SameNameException.class)
     public ResponseEntity<StandardError> sameName(SameNameException e){
         StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<StandardError> dataIntegrity(){
+        StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), "Recurso não encontrado", System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
     }
 }
