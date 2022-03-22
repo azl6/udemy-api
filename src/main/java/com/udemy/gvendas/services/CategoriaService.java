@@ -1,6 +1,7 @@
 package com.udemy.gvendas.services;
 
 import com.udemy.gvendas.domain.Categoria;
+import com.udemy.gvendas.exceptions.SameNameException;
 import com.udemy.gvendas.repositories.CategoriaRepository;
 
 
@@ -28,7 +29,11 @@ public class CategoriaService {
     }
 
     public Categoria save(Categoria categoria){
+
+        if (validateIfNameExists(categoria))
         return repo.save(categoria);
+
+        return null;
     }
 
     public Categoria update(Long id, Categoria categoria){
@@ -40,5 +45,15 @@ public class CategoriaService {
     public void delete(Long id){
         this.findById(id);
         repo.deleteById(id);
+    }
+
+    public boolean validateIfNameExists(Categoria old_cat){
+        Categoria found_cat = repo.findByNome(old_cat.getNome());
+
+        if(found_cat != null && found_cat.getCodigo() != old_cat.getCodigo())
+            throw new SameNameException("Nome da categoria já cadastrado");
+
+        return true;
+
     }
 }

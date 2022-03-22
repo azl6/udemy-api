@@ -1,5 +1,6 @@
 package com.udemy.gvendas.controllers;
 
+import com.udemy.gvendas.exceptions.SameNameException;
 import com.udemy.gvendas.exceptions.StandardError;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,12 @@ public class ExceptionHandlerController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<StandardError> validatorException(){
         StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), "O nome da categoria deve ter entre 3 e 50 caracteres", System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
+    }
+
+    @ExceptionHandler(SameNameException.class)
+    public ResponseEntity<StandardError> sameName(SameNameException e){
+        StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
     }
 }
