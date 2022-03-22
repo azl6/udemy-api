@@ -36,4 +36,9 @@ public class CategoriaService {
          BeanUtils.copyProperties(categoria, obj, "codigo");
             return repo.save(obj);
     }
+
+    public void delete(Long id){
+        this.findById(id);
+        repo.deleteById(id);
+    }
 }

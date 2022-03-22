@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="GvendasApplication" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="com.udemy.gvendas.GvendasApplication" />
-    <module name="udemy-api" />
+    <module name="gvendas" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.udemy.gvendas.*" />
