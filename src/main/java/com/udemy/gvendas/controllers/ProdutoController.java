@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class ProdutoController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Produto> findById(@RequestBody Produto produto){
+    public ResponseEntity<Produto> save(@Valid @RequestBody Produto produto){
         return ResponseEntity.ok().body(service.insert(produto));
     }
 

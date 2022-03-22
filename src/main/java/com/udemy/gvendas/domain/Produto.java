@@ -1,6 +1,10 @@
 package com.udemy.gvendas.domain;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -13,21 +17,28 @@ public class Produto {
     @Column(name = "codigo")
     private Long codigo;
 
+    @NotBlank
+    @Length(min = 3, max = 100)
     @Column(name = "descricao")
     private String descricao;
 
+    @NotNull
     @Column(name = "quantidade")
     private Integer quantidade;
 
+    @NotNull
     @Column(name = "precoCusto")
     private BigDecimal precoCusto;
 
+    @NotNull
     @Column(name = "precoVenda")
     private BigDecimal precoVenda;
 
+    @Length(max = 500)
     @Column(name = "observacao")
     private String observacao;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "codigo_categoria", referencedColumnName = "codigo")
     private Categoria categoria;
