@@ -55,8 +55,11 @@ public class ProdutoService {
         if (codigoCategoria == null)
             throw new CategoriaNullException("A categoria não pode ser nula");
         categoriaService.findById(codigoCategoria);
+    }
 
-
+    public void delete(Long id){
+        this.findById(id);
+        produtoRepository.deleteById(id);
     }
 
 }
