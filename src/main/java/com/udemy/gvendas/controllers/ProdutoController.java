@@ -42,7 +42,7 @@ public class ProdutoController {
 
     @ApiOperation(value = "Atualizar produto")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Produto produto){
+    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody Produto produto){
         service.update(id, produto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
 

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(ObjectNotFoundException.class)
-    public ResponseEntity<StandardError> objectNotFound(){
-        StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), "Não encontrado", System.currentTimeMillis());
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<StandardError> objectNotFound(NotFoundException e){
+        StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 
@@ -44,12 +44,6 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(ProdutoDuplicadoException.class)
     public ResponseEntity<StandardError> produtoDuplicado(ProdutoDuplicadoException e){
-        StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage(), System.currentTimeMillis());
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
-    }
-
-    @ExceptionHandler(InexistentCategoriaIdException.class)
-    public ResponseEntity<StandardError> inexistentCategoriaId(InexistentCategoriaIdException e){
         StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
     }
