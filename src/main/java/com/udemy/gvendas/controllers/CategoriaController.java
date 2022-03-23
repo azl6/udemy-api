@@ -2,8 +2,6 @@ package com.udemy.gvendas.controllers;
 
 import com.udemy.gvendas.domain.Categoria;
 import com.udemy.gvendas.services.CategoriaService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
