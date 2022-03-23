@@ -1,6 +1,8 @@
 package com.udemy.gvendas.services;
 
 import com.udemy.gvendas.domain.Categoria;
+import com.udemy.gvendas.exceptions.CategoriaNullException;
+import com.udemy.gvendas.exceptions.InexistentCategoriaIdException;
 import com.udemy.gvendas.exceptions.SameNameException;
 import com.udemy.gvendas.repositories.CategoriaRepository;
 
@@ -25,7 +27,7 @@ public class CategoriaService {
 
     public Categoria findById(Long id){
         Optional<Categoria> obj = repo.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(1, "Não encontrado"));
+        return obj.orElseThrow(() -> new InexistentCategoriaIdException("O código da categoria informada não existe no cadastro"));
     }
 
     public Categoria save(Categoria categoria){

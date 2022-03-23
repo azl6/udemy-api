@@ -7,6 +7,7 @@ import com.udemy.gvendas.repositories.ProdutoRepository;
 import com.udemy.gvendas.services.ProdutoService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,14 @@ public class ProdutoController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Produto> save(@Valid @RequestBody Produto produto){
         return ResponseEntity.ok().body(service.insert(produto));
+    }
+
+    @ApiOperation(value = "Atualizar produto")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Produto produto){
+        service.update(id, produto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+
     }
 
 

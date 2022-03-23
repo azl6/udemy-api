@@ -1,7 +1,6 @@
 package com.udemy.gvendas.controllers;
 
-import com.udemy.gvendas.exceptions.SameNameException;
-import com.udemy.gvendas.exceptions.StandardError;
+import com.udemy.gvendas.exceptions.*;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -34,6 +33,24 @@ public class ExceptionHandlerController {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<StandardError> dataIntegrity(){
         StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), "Recurso não encontrado", System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
+    }
+
+    @ExceptionHandler(CategoriaNullException.class)
+    public ResponseEntity<StandardError> categoriaNull(CategoriaNullException e){
+        StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
+    }
+
+    @ExceptionHandler(ProdutoDuplicadoException.class)
+    public ResponseEntity<StandardError> produtoDuplicado(ProdutoDuplicadoException e){
+        StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
+    }
+
+    @ExceptionHandler(InexistentCategoriaIdException.class)
+    public ResponseEntity<StandardError> inexistentCategoriaId(InexistentCategoriaIdException e){
+        StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
     }
 }
