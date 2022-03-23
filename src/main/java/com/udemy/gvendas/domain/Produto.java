@@ -17,28 +17,28 @@ public class Produto {
     @Column(name = "codigo")
     private Long codigo;
 
-    @NotBlank
-    @Length(min = 3, max = 100)
+    @NotBlank(message = "O campo DESCRIÇÃO deve ser preenchido")
+    @Length(min = 3, max = 100, message = "O campo DESCRIÇÃO deve ter entre 3 e 100 caracteres")
     @Column(name = "descricao")
     private String descricao;
 
-    @NotNull
+    @NotNull(message = "O campo QUANTIDADE deve ser preenchido")
     @Column(name = "quantidade")
     private Integer quantidade;
 
-    @NotNull
+    @NotNull(message = "O campo PREÇO-CUSTO deve ser preenchido")
     @Column(name = "precoCusto")
     private BigDecimal precoCusto;
 
-    @NotNull
+    @NotNull(message = "O campo PRECO-VENDA deve ser preenchido")
     @Column(name = "precoVenda")
     private BigDecimal precoVenda;
 
-    @Length(max = 500)
+    @Length(max = 500, message = "O campo OBSERVAÇÃO deve ter, no máximo, 500 caracteres")
     @Column(name = "observacao")
     private String observacao;
 
-    @NotNull
+    @NotNull(message = "O campo CÓDIGO-CATEGORIA deve ser preenchido")
     @ManyToOne
     @JoinColumn(name = "codigo_categoria", referencedColumnName = "codigo")
     private Categoria categoria;

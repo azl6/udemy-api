@@ -1,13 +1,20 @@
 package com.udemy.gvendas.controllers;
 
 import com.udemy.gvendas.exceptions.*;
+import io.jaegertracing.internal.utils.Http;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
@@ -19,9 +26,22 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<StandardError> validatorException(){
-        StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), "O nome da categoria deve ter entre 3 e 50 caracteres", System.currentTimeMillis());
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
+    public ResponseEntity<List<StandardError>> validatorException(MethodArgumentNotValidException e){
+
+        List<StandardError> listaErros = gerarListaDeErros(e.getBindingResult());
+
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(listaErros);
+    }
+
+    private List<StandardError> gerarListaDeErros(BindingResult bindingResult){
+    List<StandardError> erros = new ArrayList<>();
+
+   bindingResult.getFieldErrors().forEach(fieldError -> {
+       String msg = fieldError.getDefaultMessage();
+       erros.add(new StandardError(HttpStatus.BAD_REQUEST.value(), msg, System.currentTimeMillis()));
+   });
+
+    return erros;
     }
 
     @ExceptionHandler(SameNameException.class)

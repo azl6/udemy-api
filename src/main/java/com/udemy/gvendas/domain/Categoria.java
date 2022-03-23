@@ -14,7 +14,7 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
 
-    @NotBlank
+    @NotBlank(message = "O campo NOME deve ser preenchido")
     @Length(min = 3, max = 50)
     private String nome;
 
