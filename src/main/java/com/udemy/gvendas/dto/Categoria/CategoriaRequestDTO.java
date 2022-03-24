@@ -1,6 +1,7 @@
-package com.udemy.gvendas.dto;
+package com.udemy.gvendas.dto.Categoria;
 
 import com.udemy.gvendas.domain.Categoria;
+import com.udemy.gvendas.domain.Produto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -41,4 +42,5 @@ public class CategoriaRequestDTO implements Serializable {
     public Categoria converterParaEntidade(Long codigo){
         return new Categoria(codigo, nome);
     }
+
 }

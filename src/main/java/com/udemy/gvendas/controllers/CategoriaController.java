@@ -1,8 +1,8 @@
 package com.udemy.gvendas.controllers;
 
 import com.udemy.gvendas.domain.Categoria;
-import com.udemy.gvendas.dto.CategoriaRequestDTO;
-import com.udemy.gvendas.dto.CategoriaResponseDTO;
+import com.udemy.gvendas.dto.Categoria.CategoriaRequestDTO;
+import com.udemy.gvendas.dto.Categoria.CategoriaResponseDTO;
 import com.udemy.gvendas.services.CategoriaService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.udemy.gvendas.dto;
+package com.udemy.gvendas.dto.Categoria;
 
 import com.udemy.gvendas.domain.Categoria;
 import io.swagger.annotations.ApiModel;

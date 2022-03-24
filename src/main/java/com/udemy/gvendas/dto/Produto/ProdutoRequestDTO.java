@@ -1,59 +1,47 @@
-package com.udemy.gvendas.domain;
+package com.udemy.gvendas.dto.Produto;
 
+import com.udemy.gvendas.domain.Categoria;
+import com.udemy.gvendas.domain.Produto;
+import com.udemy.gvendas.dto.Categoria.CategoriaResponseDTO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Objects;
 
-@Entity
-@Table(name = "produto")
-public class Produto {
+@ApiModel("Produto requisição DTO")
+public class ProdutoRequestDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codigo")
-    private Long codigo;
-
-    @Column(name = "descricao")
+    @ApiModelProperty(value = "Descrição")
+    @NotBlank(message = "O campo DESCRIÇÃO deve ser preenchido")
+    @Length(min = 3, max = 100, message = "O campo DESCRIÇÃO deve ter entre 3 e 100 caracteres")
     private String descricao;
 
-    @Column(name = "quantidade")
+    @ApiModelProperty(value = "Quantidade")
+    @NotNull(message = "O campo QUANTIDADE deve ser preenchido")
     private Integer quantidade;
 
-    @Column(name = "precoCusto")
+    @ApiModelProperty(value = "Preço Custo")
+    @NotNull(message = "O campo PREÇO-CUSTO deve ser preenchido")
     private BigDecimal precoCusto;
 
-    @Column(name = "precoVenda")
+    @ApiModelProperty(value = "Preço Venda")
+    @NotNull(message = "O campo PRECO-VENDA deve ser preenchido")
     private BigDecimal precoVenda;
 
-    @Column(name = "observacao")
+    @ApiModelProperty(value = "Observação")
+    @Length(max = 500, message = "O campo OBSERVAÇÃO deve ter, no máximo, 500 caracteres")
     private String observacao;
 
-    @ManyToOne
-    @JoinColumn(name = "codigo_categoria", referencedColumnName = "codigo")
+    @ApiModelProperty(value = "Categoria")
+    @NotNull(message = "O campo CÓDIGO-CATEGORIA deve ser preenchido")
     private Categoria categoria;
 
-    public Produto() {
-    }
-
-    public Produto(String descricao, Integer quantidade, BigDecimal precoCusto, BigDecimal precoVenda, String observacao, Categoria categoria) {
-        this.descricao = descricao;
-        this.quantidade = quantidade;
-        this.precoCusto = precoCusto;
-        this.precoVenda = precoVenda;
-        this.observacao = observacao;
-        this.categoria = categoria;
-    }
-
-    public Long getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Long codigo) {
-        this.codigo = codigo;
+    public Produto converterParaEntidade(){
+        return new Produto(this.descricao, this.quantidade, this.precoCusto, this.precoVenda, this.observacao, this.categoria);
     }
 
     public String getDescricao() {
@@ -102,18 +90,5 @@ public class Produto {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Produto produto = (Produto) o;
-        return codigo.equals(produto.codigo);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(codigo);
     }
 }

@@ -38,12 +38,12 @@ public class ProdutoService {
         return produtoRepository.save(produto);
     }
 
-    public void update(Long id, Produto produtoRecebido){
+    public Produto update(Long id, Produto produtoRecebido){
         validarCodigoCategoriaDoProdutoExiste(produtoRecebido.getCategoria().getCodigo());
         validarProdutoDuplicado(produtoRecebido);
         Produto produto = this.findById(id);
         BeanUtils.copyProperties(produtoRecebido, produto = new Produto());
-        produtoRepository.save(produto);
+        return produtoRepository.save(produto);
     }
 
     public void validarProdutoDuplicado(Produto produto){
