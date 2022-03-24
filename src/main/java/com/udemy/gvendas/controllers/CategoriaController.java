@@ -1,6 +1,7 @@
 package com.udemy.gvendas.controllers;
 
 import com.udemy.gvendas.domain.Categoria;
+import com.udemy.gvendas.dto.CategoriaResponseDTO;
 import com.udemy.gvendas.services.CategoriaService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/categorias")
@@ -20,16 +22,19 @@ public class CategoriaController {
 
     @ApiOperation(value = "Listar todas as categorias")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Categoria>> findAll(){
-        List<Categoria> obj =  service.findAll();
+    public ResponseEntity<List<CategoriaResponseDTO>> findAll(){
+        List<CategoriaResponseDTO> obj =  service.findAll().stream()
+                .map(categoria -> CategoriaResponseDTO.converterParaCategoriaDTO(categoria))
+                .collect(Collectors.toList());
+
         return ResponseEntity.ok().body(obj);
     }
 
     @ApiOperation(value = "Encontrar categoria por id")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Categoria> findById(@PathVariable Long id){
+    public ResponseEntity<CategoriaResponseDTO> findById(@PathVariable Long id){
         Categoria obj =  service.findById(id);
-        return ResponseEntity.ok().body(obj);
+        return ResponseEntity.ok().body(CategoriaResponseDTO.converterParaCategoriaDTO(obj));
     }
 
     @ApiOperation(value = "Inserir categoria")
