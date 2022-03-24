@@ -1,6 +1,7 @@
 package com.udemy.gvendas.controllers;
 
 import com.udemy.gvendas.domain.Categoria;
+import com.udemy.gvendas.dto.CategoriaRequestDTO;
 import com.udemy.gvendas.dto.CategoriaResponseDTO;
 import com.udemy.gvendas.services.CategoriaService;
 import io.swagger.annotations.ApiOperation;
@@ -39,16 +40,16 @@ public class CategoriaController {
 
     @ApiOperation(value = "Inserir categoria")
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@Valid @RequestBody Categoria categoria){
-        service.save(categoria);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<CategoriaResponseDTO> insert(@Valid @RequestBody CategoriaRequestDTO categoria){
+        Categoria cat = service.save(categoria.converterParaEntidade(categoria));
+        return ResponseEntity.status(HttpStatus.CREATED).body(CategoriaResponseDTO.converterParaCategoriaDTO(cat));
     }
 
     @ApiOperation(value = "Atualizar categoria")
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-    public ResponseEntity<Void> update(@Valid @PathVariable Long id, @RequestBody Categoria categoria){
-        service.update(id, categoria);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<CategoriaResponseDTO> update(@Valid @PathVariable Long id, @RequestBody CategoriaRequestDTO categoriaDto){
+        Categoria cat = service.update(id, categoriaDto.converterParaEntidade(id));
+        return ResponseEntity.status(HttpStatus.CREATED).body(CategoriaResponseDTO.converterParaCategoriaDTO(cat));
     }
 
     @ApiOperation(value = "Deletar categoria")

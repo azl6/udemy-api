@@ -4,8 +4,10 @@ import com.udemy.gvendas.domain.Categoria;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
+
 @ApiModel("Categoria retorno DTO")
-public class CategoriaResponseDTO {
+public class CategoriaResponseDTO implements Serializable {
 
     @ApiModelProperty(value = "Código")
     private Long codigo;

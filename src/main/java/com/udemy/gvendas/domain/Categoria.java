@@ -4,22 +4,24 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "categoria")
-public class Categoria {
+public class Categoria implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
-
-    @NotBlank(message = "O campo NOME deve ser preenchido")
-    @Length(min = 3, max = 50)
     private String nome;
 
     public Categoria(Long codigo, String nome) {
         this.codigo = codigo;
+        this.nome = nome;
+    }
+
+    public Categoria(String nome) {
         this.nome = nome;
     }
 
