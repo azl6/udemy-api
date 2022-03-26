@@ -4,7 +4,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 
 @Embeddable // quando uma classe não é uma tabela/entidade
-public class Endereço {
+public class Endereco {
 
     private String logradouro;
     private Integer numero;

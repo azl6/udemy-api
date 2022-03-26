@@ -8,13 +8,20 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "codigo")
     private Long codigo;
+
+    @Column(name = "nome")
     private String nome;
+
+    @Column(name = "telefone")
     private String telefone;
+
+    @Column(name = "ativo")
     private Boolean ativo;
 
     @Embedded // quando uma classe não é uma tabela/entidade
-    private Endereço endereço;
+    private Endereco endereco;
 
     public Long getCodigo() {
         return codigo;
@@ -48,11 +55,11 @@ public class Cliente {
         this.ativo = ativo;
     }
 
-    public Endereço getEndereço() {
-        return endereço;
+    public Endereco getEndereço() {
+        return endereco;
     }
 
-    public void setEndereço(Endereço endereço) {
-        this.endereço = endereço;
+    public void setEndereço(Endereco endereço) {
+        this.endereco = endereço;
     }
 }
