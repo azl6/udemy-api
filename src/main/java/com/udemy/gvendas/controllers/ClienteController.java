@@ -48,4 +48,11 @@ public class ClienteController {
         Cliente cliente = service.insert(clienteDto.converterParaEntidade());
         return ResponseEntity.status(HttpStatus.CREATED).body(ClienteResponseDTO.converterParaClienteDTO(cliente));
     }
+
+    @ApiOperation(value = "Atualizar cliente")
+    @RequestMapping(method = RequestMethod.PUT, value = "/{codigo}")
+    public ResponseEntity<ClienteResponseDTO> update(@PathVariable Long codigo, @Valid @RequestBody ClienteRequestDTO clienteDto){
+        Cliente cliente = service.update(codigo, clienteDto.converterParaEntidade());
+        return ResponseEntity.status(HttpStatus.CREATED).body(ClienteResponseDTO.converterParaClienteDTO(cliente));
+    }
 }
