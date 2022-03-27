@@ -1,45 +1,31 @@
-package com.udemy.gvendas.domain;
+package com.udemy.gvendas.dto.Cliente;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-@Embeddable // quando uma classe não é uma tabela/entidade
-public class Endereco {
+@ApiModel("Endereço requisição DTO")
+public class EnderecoRequestDTO {
 
-    @Column(name = "logradouro")
+    @ApiModelProperty(value = "logradouro")
     private String logradouro;
 
-    @Column(name = "numero")
+    @ApiModelProperty(value = "numero")
     private Integer numero;
 
-    @Column(name = "complemento")
+    @ApiModelProperty(value = "complemento")
     private String complemento;
 
-    @Column(name = "bairro")
+    @ApiModelProperty(value = "bairro")
     private String bairro;
 
-    @Column(name = "cep")
+    @ApiModelProperty(value = "cep")
     private String cep;
 
-    @Column(name = "cidade")
+    @ApiModelProperty(value = "cidade")
     private String cidade;
 
-    @Column(name = "estado")
+    @ApiModelProperty(value = "estado")
     private String estado;
-
-    public Endereco(String logradouro, Integer numero, String complemento, String bairro, String cep, String cidade, String estado) {
-        this.logradouro = logradouro;
-        this.numero = numero;
-        this.complemento = complemento;
-        this.bairro = bairro;
-        this.cep = cep;
-        this.cidade = cidade;
-        this.estado = estado;
-    }
-
-    public Endereco() {
-    }
 
     public String getLogradouro() {
         return logradouro;

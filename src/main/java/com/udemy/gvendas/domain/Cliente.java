@@ -23,6 +23,16 @@ public class Cliente {
     @Embedded // quando uma classe não é uma tabela/entidade
     private Endereco endereco;
 
+    public Cliente(String nome, String telefone, Boolean ativo, Endereco endereco) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.ativo = ativo;
+        this.endereco = endereco;
+    }
+
+    public Cliente() {
+    }
+
     public Long getCodigo() {
         return codigo;
     }

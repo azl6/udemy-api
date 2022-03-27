@@ -4,6 +4,7 @@ import com.udemy.gvendas.domain.Categoria;
 import com.udemy.gvendas.domain.Cliente;
 import com.udemy.gvendas.dto.Categoria.CategoriaRequestDTO;
 import com.udemy.gvendas.dto.Categoria.CategoriaResponseDTO;
+import com.udemy.gvendas.dto.Cliente.ClienteRequestDTO;
 import com.udemy.gvendas.dto.Cliente.ClienteResponseDTO;
 import com.udemy.gvendas.services.ClienteService;
 import io.swagger.annotations.Api;
@@ -43,8 +44,8 @@ public class ClienteController {
 
     @ApiOperation(value = "Inserir cliente")
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<ClienteResponseDTO> insert(@Valid @RequestBody Cliente cliente){
-        Cliente cat = service.insert(cliente);
+    public ResponseEntity<ClienteResponseDTO> insert(@Valid @RequestBody ClienteRequestDTO clienteDto){
+        Cliente cliente = service.insert(clienteDto.converterParaEntidade());
         return ResponseEntity.status(HttpStatus.CREATED).body(ClienteResponseDTO.converterParaClienteDTO(cliente));
     }
 }
