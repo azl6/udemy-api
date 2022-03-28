@@ -44,11 +44,11 @@ public class VendaResponseDTO {
         this.data = data;
     }
 
-    public List<ItemVenda> getItemVendaDTO() {
+    public List<ItemVendaResponseDTO> getItemVendaDTO() {
         return itemVendaDTO;
     }
 
-    public void setItemVendaDTO(List<ItemVenda> itemVendaDTO) {
+    public void setItemVendaDTO(List<ItemVendaResponseDTO> itemVendaDTO) {
         this.itemVendaDTO = itemVendaDTO;
     }
 }

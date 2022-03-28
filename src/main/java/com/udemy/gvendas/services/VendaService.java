@@ -45,6 +45,6 @@ public class VendaService {
     }
 
     private ItemVendaResponseDTO criandoItensVendaResponseDto(ItemVenda itemVenda){
-        return new ItemVendaResponseDTO(itemVenda.getCodigo(), itemVenda.getQuantidade(), itemVenda.getPrecoVendido(), itemVenda.getProduto().getCodigo(), itemVenda.getProduto().getDescricao())
+        return new ItemVendaResponseDTO(itemVenda.getCodigo(), itemVenda.getQuantidade(), itemVenda.getPrecoVendido(), itemVenda.getProduto().getCodigo(), itemVenda.getProduto().getDescricao());
     }
 }
