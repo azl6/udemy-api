@@ -6,12 +6,15 @@ import com.udemy.gvendas.domain.Venda;
 import com.udemy.gvendas.dto.Venda.ClienteVendaResponseDTO;
 import com.udemy.gvendas.dto.Venda.ItemVendaResponseDTO;
 import com.udemy.gvendas.dto.Venda.VendaResponseDTO;
+import com.udemy.gvendas.exceptions.NotFoundException;
 import com.udemy.gvendas.repositories.ItemVendaRepository;
 import com.udemy.gvendas.repositories.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,5 +49,15 @@ public class VendaService {
 
     private ItemVendaResponseDTO criandoItensVendaResponseDto(ItemVenda itemVenda){
         return new ItemVendaResponseDTO(itemVenda.getCodigo(), itemVenda.getQuantidade(), itemVenda.getPrecoVendido(), itemVenda.getProduto().getCodigo(), itemVenda.getProduto().getDescricao());
+    }
+
+    public ClienteVendaResponseDTO findById(Long codigo){
+        Venda vendaExiste = validarVendaExiste(codigo);
+        return new ClienteVendaResponseDTO(vendaExiste.getCliente().getNome(), Arrays.asList(criandoVendaResponseDTO(vendaExiste)));
+    }
+
+    private Venda validarVendaExiste(Long codigo){
+        Optional<Venda> venda = vendaRepository.findById(codigo);
+        return venda.orElseThrow(() -> new NotFoundException("O código da venda informado não está cadastrado"));
     }
 }
