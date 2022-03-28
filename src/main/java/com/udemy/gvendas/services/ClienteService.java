@@ -51,4 +51,9 @@ public class ClienteService {
             throw new SameNameException(String.format("O cliente %s já está cadastrado", obj.getNome()));
         }
     }
+
+    public void delete(Long codigo){
+        Cliente cli = validarClienteExiste(codigo);
+        clienteRepository.deleteById(codigo);
+    }
 }

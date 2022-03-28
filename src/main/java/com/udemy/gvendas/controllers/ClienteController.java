@@ -55,4 +55,11 @@ public class ClienteController {
         Cliente cliente = service.update(codigo, clienteDto.converterParaEntidade());
         return ResponseEntity.status(HttpStatus.CREATED).body(ClienteResponseDTO.converterParaClienteDTO(cliente));
     }
+
+    @ApiOperation(value = "Deletar cliente")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{codigo}")
+    public void delete(@PathVariable Long codigo){
+        service.delete(codigo);
+    }
 }
