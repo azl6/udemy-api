@@ -2,10 +2,9 @@ package com.udemy.gvendas.services;
 
 import com.udemy.gvendas.domain.Cliente;
 import com.udemy.gvendas.domain.ItemVenda;
+import com.udemy.gvendas.domain.Produto;
 import com.udemy.gvendas.domain.Venda;
-import com.udemy.gvendas.dto.Venda.ClienteVendaResponseDTO;
-import com.udemy.gvendas.dto.Venda.ItemVendaResponseDTO;
-import com.udemy.gvendas.dto.Venda.VendaResponseDTO;
+import com.udemy.gvendas.dto.Venda.*;
 import com.udemy.gvendas.exceptions.NotFoundException;
 import com.udemy.gvendas.repositories.ItemVendaRepository;
 import com.udemy.gvendas.repositories.VendaRepository;
@@ -24,12 +23,14 @@ public class VendaService {
     private ClienteService clienteService;
     private VendaRepository vendaRepository;
     private ItemVendaRepository itemVendaRepository;
+    private ProdutoService produtoService;
 
     @Autowired
-    public VendaService(ClienteService clienteService, VendaRepository vendaRepository, ItemVendaRepository itemVendaRepository) {
+    public VendaService(ClienteService clienteService, VendaRepository vendaRepository, ItemVendaRepository itemVendaRepository, ProdutoService produtoService) {
         this.clienteService = clienteService;
         this.vendaRepository = vendaRepository;
         this.itemVendaRepository = itemVendaRepository;
+        this.produtoService = produtoService;
     }
 
     public ClienteVendaResponseDTO listarVendaPorCliente(Long codigoCliente){
@@ -59,5 +60,30 @@ public class VendaService {
     private Venda validarVendaExiste(Long codigo){
         Optional<Venda> venda = vendaRepository.findById(codigo);
         return venda.orElseThrow(() -> new NotFoundException("O código da venda informado não está cadastrado"));
+    }
+
+    public ClienteVendaResponseDTO salvar(Long codigoCliente, VendaRequestDTO vendaDto){
+        Cliente cliente = clienteService.findById(codigoCliente);
+        validarProdutoExiste(vendaDto.getItensVendaDTO());
+        Venda vendaSalva = salvarVenda(cliente, vendaDto);
+
+        return new ClienteVendaResponseDTO(vendaExiste.getCliente().getNome(), Arrays.asList(criandoVendaResponseDTO(vendaExiste)));
+
+    }
+
+    private Venda salvarVenda(Cliente cliente, VendaRequestDTO vendaDto){
+        Venda vendaSalva = vendaRepository.save(new Venda(vendaDto.getData(), cliente));
+        vendaDto.getItensVendaDTO().stream().map(x -> criandoItemVenda(x, vendaSalva))
+                .forEach(itemVendaRepository::save);
+
+        return vendaSalva;
+    }
+
+    private void validarProdutoExiste(List<ItemVendaRequestDTO> itensVendaDto){
+        itensVendaDto.stream().map(x -> produtoService.findById(x.getCodigoProduto()));
+    }
+
+    private ItemVenda criandoItemVenda(ItemVendaRequestDTO itemVendaDto, Venda venda){
+        return new ItemVenda(itemVendaDto.getQuantidade(), itemVendaDto.getPrecoVendido(), new Produto(itemVendaDto.getCodigoProduto()), venda);
     }
 }

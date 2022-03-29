@@ -57,6 +57,10 @@ public class ProdutoService {
         categoriaService.findById(codigoCategoria);
     }
 
+    protected Produto validarProdutoExiste(Long codigoProduto){
+        Optional<Produto> produto = produtoRepository.findById(codigoProduto);
+    }
+
     public void delete(Long id){
         this.findById(id);
         produtoRepository.deleteById(id);
