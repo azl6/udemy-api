@@ -67,7 +67,8 @@ public class VendaService {
         validarProdutoExiste(vendaDto.getItensVendaDTO());
         Venda vendaSalva = salvarVenda(cliente, vendaDto);
 
-        return new ClienteVendaResponseDTO(vendaExiste.getCliente().getNome(), Arrays.asList(criandoVendaResponseDTO(vendaExiste)));
+        return new ClienteVendaResponseDTO(vendaSalva.getCliente().getNome(),
+                Arrays.asList(criandoVendaResponseDTO(vendaSalva), itemVendaRepository.findByVendaCodigo(vendaSalva.getCodigo());
 
     }
 
