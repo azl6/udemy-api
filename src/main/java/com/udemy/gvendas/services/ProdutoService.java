@@ -21,6 +21,9 @@ public class ProdutoService {
     private ProdutoRepository produtoRepository;
 
     @Autowired
+    private ProdutoService produtoService;
+
+    @Autowired
     private CategoriaService categoriaService;
 
     public List<Produto> findAll(){
@@ -58,7 +61,7 @@ public class ProdutoService {
     }
 
     protected Produto validarProdutoExiste(Long codigoProduto){
-        Optional<Produto> produto = produtoRepository.findById(codigoProduto);
+        return produtoService.findById(codigoProduto);
     }
 
     public void delete(Long id){

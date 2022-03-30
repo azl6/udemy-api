@@ -36,13 +36,14 @@ public class VendaService {
     public ClienteVendaResponseDTO listarVendaPorCliente(Long codigoCliente){
         Cliente clienteBuscado = clienteService.findById(codigoCliente);
         List<VendaResponseDTO> vendaResponseDTOList = vendaRepository.findByClienteCodigo(codigoCliente).stream()
-                .map(this::criandoVendaResponseDTO).collect(Collectors.toList());
+                .map(venda -> criandoVendaResponseDTO(venda, itemVendaRepository.findByVendaCodigo(venda.getCodigo()))).collect(Collectors.toList());
 
         return new ClienteVendaResponseDTO(clienteBuscado.getNome(), vendaResponseDTOList);
     }
 
-    private VendaResponseDTO criandoVendaResponseDTO(Venda venda){
-            List<ItemVendaResponseDTO> itensVendaResponseDto = itemVendaRepository.findByVendaCodigo(venda.getCodigo())
+
+    private VendaResponseDTO criandoVendaResponseDTO(Venda venda, List<ItemVenda> itensVendaList){
+            List<ItemVendaResponseDTO> itensVendaResponseDto = itensVendaList
                     .stream().map(this::criandoItensVendaResponseDto).collect(Collectors.toList());
 
             return new VendaResponseDTO(venda.getCodigo(), venda.getData(), itensVendaResponseDto);
@@ -52,9 +53,10 @@ public class VendaService {
         return new ItemVendaResponseDTO(itemVenda.getCodigo(), itemVenda.getQuantidade(), itemVenda.getPrecoVendido(), itemVenda.getProduto().getCodigo(), itemVenda.getProduto().getDescricao());
     }
 
-    public ClienteVendaResponseDTO findById(Long codigo){
+    public ClienteVendaResponseDTO listarVendaPorCodigo(Long codigo){
         Venda vendaExiste = validarVendaExiste(codigo);
-        return new ClienteVendaResponseDTO(vendaExiste.getCliente().getNome(), Arrays.asList(criandoVendaResponseDTO(vendaExiste)));
+        List<ItemVenda> itensVendaList = itemVendaRepository.findByVendaCodigo(vendaExiste.getCodigo());
+        return new ClienteVendaResponseDTO(vendaExiste.getCliente().getNome(), Arrays.asList(criandoVendaResponseDTO(vendaExiste, itensVendaList)));
     }
 
     private Venda validarVendaExiste(Long codigo){
@@ -67,10 +69,11 @@ public class VendaService {
         validarProdutoExiste(vendaDto.getItensVendaDTO());
         Venda vendaSalva = salvarVenda(cliente, vendaDto);
 
-        return new ClienteVendaResponseDTO(vendaSalva.getCliente().getNome(),
-                Arrays.asList(criandoVendaResponseDTO(vendaSalva), itemVendaRepository.findByVendaCodigo(vendaSalva.getCodigo());
+        return new ClienteVendaResponseDTO(vendaSalva.getCliente().getNome(), Arrays.asList(criandoVendaResponseDTO(vendaSalva, itemVendaRepository.findByVendaCodigo(vendaSalva.getCodigo()))));
+
 
     }
+
 
     private Venda salvarVenda(Cliente cliente, VendaRequestDTO vendaDto){
         Venda vendaSalva = vendaRepository.save(new Venda(vendaDto.getData(), cliente));
