@@ -67,4 +67,10 @@ public class ExceptionHandlerController {
         StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
     }
+
+    @ExceptionHandler(InvalidQuantityException.class)
+    public ResponseEntity<StandardError> quantidadeInválida(InvalidQuantityException e){
+        StandardError err = new StandardError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
+    }
 }

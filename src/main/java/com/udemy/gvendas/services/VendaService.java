@@ -5,6 +5,7 @@ import com.udemy.gvendas.domain.ItemVenda;
 import com.udemy.gvendas.domain.Produto;
 import com.udemy.gvendas.domain.Venda;
 import com.udemy.gvendas.dto.Venda.*;
+import com.udemy.gvendas.exceptions.InvalidQuantityException;
 import com.udemy.gvendas.exceptions.NotFoundException;
 import com.udemy.gvendas.repositories.ItemVendaRepository;
 import com.udemy.gvendas.repositories.VendaRepository;
@@ -86,7 +87,18 @@ public class VendaService {
     }
 
     private void validarProdutoExiste(List<ItemVendaRequestDTO> itensVendaDto){
-        itensVendaDto.stream().map(x -> produtoService.findById(x.getCodigoProduto()));
+        itensVendaDto.stream().map(x -> {
+            Produto produto = produtoService.findById(x.getCodigoProduto());
+            validarQuantidadeProdutoExiste(produto, x.getQuantidade());
+        });
+    }
+
+    private void validarQuantidadeProdutoExiste(Produto produto, Integer qtdVendaDto){
+
+        if(!(produto.getQuantidade() >= qtdVendaDto))
+            throw new InvalidQuantityException(String.format("A quantidade do produto %s informada excede o estoque", produto.getDescricao()));
+
+
     }
 
     private ItemVenda criandoItemVenda(ItemVendaRequestDTO itemVendaDto, Venda venda){
