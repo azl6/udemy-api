@@ -3,6 +3,8 @@ package com.udemy.gvendas.dto.Venda;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -10,8 +12,11 @@ import java.util.List;
 public class VendaRequestDTO {
 
     @ApiModelProperty(value = "Data")
+    @NotNull(message = "O campo DATA não pode ser nulo")
     private LocalDate data;
 
+    @Valid
+    @NotNull(message = "O campo ITENS DA VENDA não pode ser nulo")
     @ApiModelProperty(value = "Itens da venda")
     private List<ItemVendaRequestDTO> itensVendaDTO;
 
