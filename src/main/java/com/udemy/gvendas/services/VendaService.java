@@ -9,8 +9,11 @@ import com.udemy.gvendas.exceptions.InvalidQuantityException;
 import com.udemy.gvendas.exceptions.NotFoundException;
 import com.udemy.gvendas.repositories.ItemVendaRepository;
 import com.udemy.gvendas.repositories.VendaRepository;
+import io.jaegertracing.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,11 +68,10 @@ public class VendaService {
         return venda.orElseThrow(() -> new NotFoundException("O código da venda informado não está cadastrado"));
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = Exception.class)
     public ClienteVendaResponseDTO salvar(Long codigoCliente, VendaRequestDTO vendaDto){
         Cliente cliente = clienteService.findById(codigoCliente);
-        System.out.println("\n\n");
         validarProdutoExisteEAtualizarQuantidade(vendaDto.getItensVendaDTO());
-        System.out.println("\n\n");
         Venda vendaSalva = salvarVenda(cliente, vendaDto);
 
         return retornandoClienteVendaResponseDTO(vendaSalva, itemVendaRepository.findByVendaPorCodigo(vendaSalva.getCodigo()));
@@ -89,7 +91,6 @@ public class VendaService {
     }
 
     private void validarProdutoExisteEAtualizarQuantidade(List<ItemVendaRequestDTO> itensVendaDto){
-        System.out.println("OLÁ");
         itensVendaDto.forEach(x -> {
             System.out.println(String.format("Produto %d: qtd. requerida - %d", x.getCodigoProduto(), x.getQuantidade()));
             Produto produto = produtoService.findById(x.getCodigoProduto());
