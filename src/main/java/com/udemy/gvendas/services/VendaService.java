@@ -9,7 +9,6 @@ import com.udemy.gvendas.exceptions.InvalidQuantityException;
 import com.udemy.gvendas.exceptions.NotFoundException;
 import com.udemy.gvendas.repositories.ItemVendaRepository;
 import com.udemy.gvendas.repositories.VendaRepository;
-import io.jaegertracing.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -97,7 +96,7 @@ public class VendaService {
             System.out.println(String.format("Produto %d: qtd. disponível - %d", produto.getCodigo(), produto.getQuantidade()));
             validarQuantidadeProdutoExiste(produto, x.getQuantidade());
             produto.setQuantidade(produto.getQuantidade() - x.getQuantidade());
-            produtoService.atualizarQuantidadeAposVenda(produto);
+            produtoService.atualizarQuantidadeEmEstoque(produto);
         });
     }
 
@@ -112,5 +111,23 @@ public class VendaService {
 
     private ItemVenda criandoItemVenda(ItemVendaRequestDTO itemVendaDto, Venda venda){
         return new ItemVenda(itemVendaDto.getQuantidade(), itemVendaDto.getPrecoVendido(), new Produto(itemVendaDto.getCodigoProduto()), venda);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = Exception.class)
+    public void deletar(Long codigoVenda){
+        Venda venda = validarVendaExiste(codigoVenda);
+        List<ItemVenda> itensVenda = itemVendaRepository.findByVendaPorCodigo(codigoVenda);
+        validarProdutoExisteEDevolverEstoque(itensVenda);
+        itemVendaRepository.deleteAll(itensVenda);
+        vendaRepository.delete(venda);
+    }
+
+    private void validarProdutoExisteEDevolverEstoque(List<ItemVenda> itensVenda){
+        itensVenda.forEach(x -> {
+            Produto produto = produtoService.findById(x.getProduto().getCodigo()); //validando que o produto existe
+            produto.setQuantidade(produto.getQuantidade() + x.getQuantidade());
+            produtoService.atualizarQuantidadeEmEstoque(produto);
+
+        });
     }
 }

@@ -35,7 +35,7 @@ public class ProdutoService {
         return obj.orElseThrow(() -> new NotFoundException("O código do produto informado não existe no cadastro"));
     }
 
-    protected void atualizarQuantidadeAposVenda(Produto produto){
+    protected void atualizarQuantidadeEmEstoque(Produto produto){
         produtoRepository.save(produto);
     }
 

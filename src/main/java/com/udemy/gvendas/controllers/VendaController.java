@@ -37,4 +37,11 @@ public class VendaController {
     public ResponseEntity<ClienteVendaResponseDTO> salvar(@PathVariable Long codigoCliente, @Valid @RequestBody VendaRequestDTO vendaDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(vendaService.salvar(codigoCliente, vendaDto));
     }
+
+    @ApiOperation(value = "Deletar venda", nickname = "deletar")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{codigoVenda}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long codigoVenda){
+        vendaService.deletar(codigoVenda);
+    }
 }
