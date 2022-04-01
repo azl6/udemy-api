@@ -33,7 +33,7 @@ public class VendaController {
     }
 
     @ApiOperation(value = "Registrar venda", nickname = "salvar")
-    @PostMapping("/clientes/{codigoCliente}")
+    @PostMapping("/cliente/{codigoCliente}")
     public ResponseEntity<ClienteVendaResponseDTO> salvar(@PathVariable Long codigoCliente, @Valid @RequestBody VendaRequestDTO vendaDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(vendaService.salvar(codigoCliente, vendaDto));
     }
