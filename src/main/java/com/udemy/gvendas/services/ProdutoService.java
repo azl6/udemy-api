@@ -35,6 +35,10 @@ public class ProdutoService {
         return obj.orElseThrow(() -> new NotFoundException("O código do produto informado não existe no cadastro"));
     }
 
+    protected void atualizarQuantidadeAposVenda(Produto produto){
+        produtoRepository.save(produto);
+    }
+
     public Produto insert(Produto produto){
         validarCodigoCategoriaDoProdutoExiste(produto.getCategoria().getCodigo());
         validarProdutoDuplicado(produto);
