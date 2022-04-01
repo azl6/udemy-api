@@ -67,7 +67,9 @@ public class VendaService {
 
     public ClienteVendaResponseDTO salvar(Long codigoCliente, VendaRequestDTO vendaDto){
         Cliente cliente = clienteService.findById(codigoCliente);
+        System.out.println("\n\n");
         validarProdutoExisteEAtualizarQuantidade(vendaDto.getItensVendaDTO());
+        System.out.println("\n\n");
         Venda vendaSalva = salvarVenda(cliente, vendaDto);
 
         return retornandoClienteVendaResponseDTO(vendaSalva, itemVendaRepository.findByVendaPorCodigo(vendaSalva.getCodigo()));
@@ -87,19 +89,22 @@ public class VendaService {
     }
 
     private void validarProdutoExisteEAtualizarQuantidade(List<ItemVendaRequestDTO> itensVendaDto){
-        itensVendaDto.stream().map(x -> {
+        System.out.println("OLÁ");
+        itensVendaDto.forEach(x -> {
+            System.out.println(String.format("Produto %d: qtd. requerida - %d", x.getCodigoProduto(), x.getQuantidade()));
             Produto produto = produtoService.findById(x.getCodigoProduto());
+            System.out.println(String.format("Produto %d: qtd. disponível - %d", produto.getCodigo(), produto.getQuantidade()));
             validarQuantidadeProdutoExiste(produto, x.getQuantidade());
             produto.setQuantidade(produto.getQuantidade() - x.getQuantidade());
             produtoService.atualizarQuantidadeAposVenda(produto);
-            return 0;
         });
     }
 
     private void validarQuantidadeProdutoExiste(Produto produto, Integer qtdVendaDto){
 
         if(produto.getQuantidade() < qtdVendaDto)
-            throw new InvalidQuantityException(String.format("A quantidade do produto %s informada excede o estoque", produto.getDescricao()));
+            throw new InvalidQuantityException(String.format("A quantidade do produto %s informada excede o estoque [ESTOQUE ATUAL: %d unidades]",
+                    produto.getDescricao(), produto.getQuantidade()));
 
 
     }
