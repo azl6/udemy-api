@@ -6,6 +6,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
+    image: udemy-api_app:latest
     container_name: app
     ports:
       - 8080:8080
@@ -14,6 +15,8 @@ services:
       - jaeger
       - prometheus
       - grafana
+    command: ["-c", "/app/wait-for-mysql.sh mysql: 3307 && java -jar /app/gestao_vendas.jar"]
+    entrypoint: ["/bin/sh"]
 
   mysql:
     image: mysql:8.0.22
